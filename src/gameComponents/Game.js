@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 // import PlayingArea from "./PlayingArea";
 import PlayerHand from "./PlayerHand";
-import Card from "./Card";
 
 import deckofcards from '../deck-of-cards.js';
 
@@ -14,11 +13,14 @@ const Game = () => {
   const [playerTwoHand, setPlayerTwoHand] = useState([]);
 
 
+
   useEffect(() => {
-    console.log("useEffect: deck test: " + JSON.stringify(deck)); 
+    console.log("useEffect: deck: " + JSON.stringify(deck)); 
     console.log("useEffect: shuffleDeck will be TRIGGERED now");
     initializeGame(); 
   }, []);
+
+
 
   const initializeGame = () => {
     shuffleDeck(deck);
@@ -67,13 +69,14 @@ const Game = () => {
     console.log("playerHand 2 : " + JSON.stringify(playerHand));
   }
 
+  const playerTookTurn = number => {
 
-  const sortCardsInHand = () => {
-   
+    console.log("test playerTookTurn number: " + number);
   }
 
-  const checkIfOpponentHasRequestedCards = () => {
-    
+
+  const checkForRequestedCards = () => {
+
   }
 
   const goFish = () => {
@@ -89,6 +92,7 @@ const Game = () => {
       <PlayerHand 
         playerHand={playerHand}
         setPlayerHand={setPlayerHand}
+        playerTookTurn={playerTookTurn}
       />
     </>
   )
