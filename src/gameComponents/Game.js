@@ -20,11 +20,6 @@ const Game = () => {
     initializeGame(); 
   }, []);
 
-  useEffect(() => {
-    sortCardsInHand()
-  }, [playerHand, playerTwoHand]);
-
-
   const initializeGame = () => {
     shuffleDeck(deck);
     dealInitialHands();
