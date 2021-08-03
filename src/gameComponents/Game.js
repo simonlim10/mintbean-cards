@@ -16,6 +16,7 @@ const Game = () => {
 
   const [requestedCard, setRequestedCard] = useState('');
 
+  const [winnerAnnouncement, setWinnerAnnouncement] = useState('');
 
   useEffect(() => {
     console.log("useEffect: deck: " + JSON.stringify(deck)); 
@@ -159,12 +160,44 @@ const Game = () => {
   // }
 
 
+  let ranks = {
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 4,
+    6: 5,
+    7: 6,
+    8: 7,
+    9: 8,
+    10: 9,
+    J: 10,
+    Q: 11,
+    K: 12,
+    A: 13
+  }
+
+  const sortCardsInHand = () => { 
+    const playerhand = playerHand.sort((left,right) => {
+      return ranks[left.number] - ranks[right.number];
+    });
+    setPlayerHand(playerhand);
+    const playerhandtwo = playerTwoHand.sort((left,right) => {
+      return ranks[left.number] - ranks[right.number];
+    })
+    setPlayerTwoHand(playerhandtwo);
+    console.log("playerHand RIGHT AFTER sort: " + JSON.stringify(playerHand))
+    console.log("playerTwoHand RIGHT AFTER sort: " + JSON.stringify(playerTwoHand))
+  };
+
+
+
   const goFish = () => {
 
   }
 
 
   const checkForWinner = () => {
+    let winner = ''
     let checkPlayerOneHand = playerHand
     let checkPlayerTwoHand = playerTwoHand
 
@@ -176,13 +209,16 @@ const Game = () => {
     console.log("testwin checkPlayerOneHand[0].number: " + checkPlayerOneHand[0].number);
 
     if (deck.length === 0 && playerOneHandRemainder === 0 && playerTwoHandRemainder === 0) {
+      sortCardsInHand()
       let pOneScore = 0
       let pTwoScore = 0
       let completeBook = 0
 
       let lastpOneCard = checkPlayerOneHand[0].number
       let lastpTwoCard = checkPlayerTwoHand[0].number
-      for (var x = 0; x <= checkPlayerOneHand.length; x++) {
+
+      //check player one's points
+      for (var x = 0; x <= checkPlayerOneHand.length-1; x++) {
           console.log("testwin x: " + x)
         if (lastpOneCard == checkPlayerOneHand[x].number) {
           completeBook++
@@ -194,17 +230,48 @@ const Game = () => {
         } else {
           completeBook = 0
         }
+        lastpOneCard = checkPlayerOneHand[x].number
       }
 
+      //check player two's points
+      for (var x = 0; x <= checkPlayerTwoHand.length-1; x++) {
+          console.log("testwin x: " + x)
+        if (lastpTwoCard == checkPlayerTwoHand[x].number) {
+          completeBook++
+          if (completeBook == 3) {
+            pTwoScore++
+            console.log("testwin pTwoScore: " + pTwoScore)
+            completeBook = 0
+          }
+        } else {
+          completeBook = 0
+        }
+        lastpTwoCard = checkPlayerTwoHand[x].number
+      }
+
+      console.log("testwin calc start 1")
+      if (pOneScore > pTwoScore) {
+        winner = "p1 wins!"
+        console.log("testwin calc start 2")
+      } else if (pOneScore < pTwoScore) {
+        winner = "p2 wins!"
+        console.log("testwin calc start 3")
+      } else if (pOneScore = pTwoScore) {
+        winner = "it's a tie!"
+      }
     }
+    setWinnerAnnouncement(winner)
+    announceWinner()
   }
 
+  const announceWinner = () => {
 
-
+  }
 
 
   return (
     <>
+      {winnerAnnouncement}
       <PlayerHand 
         playerHand={playerHand}
         setPlayerHand={setPlayerHand}
