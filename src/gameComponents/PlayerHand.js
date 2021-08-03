@@ -10,6 +10,11 @@ const PlayerHand = props => {
     sortCardsInHand()
   }, [props.playerHand]);
 
+  useEffect(() => {
+    console.log("props.playerTwoHand: " + JSON.stringify(props.playerTwoHand))
+    sortCardsInHand()
+  }, [props.playerTwoHand]);
+
   let ranks = {
     2: 1,
     3: 2,
@@ -31,23 +36,54 @@ const PlayerHand = props => {
       return ranks[left.number] - ranks[right.number];
     });
     props.setPlayerHand(playerhand);
+    const playerhandtwo = props.playerTwoHand.sort((left,right) => {
+      return ranks[left.number] - ranks[right.number];
+    });
+    props.setPlayerHand(playerhandtwo);
     console.log("props.playerHand RIGHT AFTER sort: " + JSON.stringify(props.playerHand))
+    console.log("props.playerTwoHand RIGHT AFTER sort: " + JSON.stringify(props.playerTwoHand))
   };
 
 
-  return (
-    <div className="player-hand text-right flex flex-row flex-nowrap">
+  let content = "";
 
-      {props.playerHand.map(card => (
-          <Card card={card}
-                playerTookTurn={props.playerTookTurn}
-                className="w-32 h-44 rounded-lg shadow-md border-2 border-gray-300 overflow-hidden"
-          />
-        ))
-      }
+  if (props.playerTurn == 1) {
 
-    </div>
-  )
-};
+    content = (
+      <div className="player-hand text-right flex flex-row flex-nowrap">
+        player 1
+        {props.playerHand.map((card, index) => (
+            <Card card={card}
+                  key={index}
+                  playerTookTurn={props.playerTookTurn}
+                  className="w-32 h-44 rounded-lg shadow-md border-2 border-gray-300 overflow-hidden"
+            />
+          ))
+        }
+
+      </div>
+    )
+
+  } else {
+
+    content = (
+      <div className="player-hand text-right flex flex-row flex-nowrap">
+        player 2
+        {props.playerTwoHand.map((card, index) => (
+            <Card card={card}
+                  key={index}
+                  playerTookTurn={props.playerTwoTookTurn}
+                  className="w-32 h-44 rounded-lg shadow-md border-2 border-gray-300 overflow-hidden"
+            />
+          ))
+        }
+
+      </div>
+    )
+  }
+
+  return content;
+}
+
 
 export default PlayerHand;

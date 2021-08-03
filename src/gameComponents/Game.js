@@ -12,6 +12,11 @@ const Game = () => {
   const [playerHand, setPlayerHand] = useState([]);
   const [playerTwoHand, setPlayerTwoHand] = useState([]);
 
+  const [playerTurn, setPlayerTurn] = useState('');
+
+  const [requestedCard, setRequestedCard] = useState('');
+
+  const [handCheck, setHandCheck] = useState([]);
 
 
   useEffect(() => {
@@ -20,10 +25,17 @@ const Game = () => {
     initializeGame(); 
   }, []);
 
-
+  //console.log purposes
+  useEffect(() => {
+    console.log("useEffect: test playerTurn: " + playerTurn); 
+  }, [playerTurn]);
+  useEffect(() => {
+    console.log("useEffect: test handCheck: " + handCheck); 
+  }, [handCheck]);
 
   const initializeGame = () => {
     shuffleDeck(deck);
+    randomizeWhoGetsFirstTurn();
     dealInitialHands();
     console.log("playerHand: " + JSON.stringify(playerHand))
   }
@@ -51,13 +63,18 @@ const Game = () => {
     console.log("shuffleddeck AFTER shuffling: " + JSON.stringify(shuffleddeck));
   };
 
+  const randomizeWhoGetsFirstTurn = () => {
+    setPlayerTurn(Math.floor(Math.random() * 2))
+    console.log("test random playerTurn: " + playerTurn);
+  }
 
   const dealInitialHands = () => {
     let usedDeck = deck
     // let dealthands = usedDeck.slice(-7) 
     setPlayerHand(usedDeck.splice(-7,7))
     setPlayerTwoHand(usedDeck.splice(-7,7)) 
-    console.log("playerHand 2 : " + JSON.stringify(playerHand));
+    console.log("playerHand 1 : " + JSON.stringify(playerHand));
+    console.log("playerHand 2 : " + JSON.stringify(playerTwoHand));
 
     // console.log("usedDeck slice: " + JSON.stringify(usedDeck.slice(-7)));
 
@@ -69,30 +86,96 @@ const Game = () => {
     console.log("playerHand 2 : " + JSON.stringify(playerHand));
   }
 
+
+
+
   const playerTookTurn = number => {
 
-    console.log("test playerTookTurn number: " + number);
+    let handToCheck = playerTwoHand
+
+    const cardsSuccessfullyFished = handToCheck.filter(card => card.number == number);
+    const opponentHandAfterBeingFished = handToCheck.filter(card => card.number !== number);
+
+    console.log("opponentHandAfterBeingFished: " + JSON.stringify(opponentHandAfterBeingFished));
+
+    console.log("cardsSuccessfullyFished: " + JSON.stringify(cardsSuccessfullyFished));
+
+    let whoseTurn = playerTurn
+    if (cardsSuccessfullyFished.length === 0) {
+      goFish();
+      whoseTurn = 0
+      console.log("setPlayerTurn to player2!");
+    } else {
+      console.log("testz - you got some cards!");
+      //alert function tell player to pick again
+    }
+    setPlayerTurn(whoseTurn)
+
   }
 
+  const playerTwoTookTurn = number => {
 
-  const checkForRequestedCards = () => {
+    let handToCheck = playerHand
+
+    const cardsSuccessfullyFished = handToCheck.filter(card => card.number == number);
+    const opponentHandAfterBeingFished = handToCheck.filter(card => card.number !== number);
+
+
+    console.log("opponentHandAfterBeingFished : " + JSON.stringify(opponentHandAfterBeingFished));
+
+    console.log("cardsSuccessfullyFished : " + JSON.stringify(cardsSuccessfullyFished));
+
+    let whoseTurn = playerTurn
+    if (cardsSuccessfullyFished.length === 0) {
+      goFish();
+      whoseTurn = 1
+      console.log("setPlayerTurn to player1!");
+    } else {
+      console.log("testz - you got some cards!");
+    }
+    setPlayerTurn(whoseTurn)
+
 
   }
+
+  // const checkForRequestedCards = number => {
+  //   let handToCheck = playerHand
+
+  //   const cardsSuccessfullyFished = handToCheck.filter(card => card.number == number);
+  //   const opponentHandAfterBeingFished = handToCheck.filter(card => card.number !== number);
+
+  //   return cardsSuccessfullyFished
+  // }
+
 
   const goFish = () => {
 
   }
 
+
   const checkForWinner = () => {
 
   }
+
+
+
+
+  const computerTakesTurn = () => {
+
+  }
+
+
 
   return (
     <>
       <PlayerHand 
         playerHand={playerHand}
         setPlayerHand={setPlayerHand}
+        playerTwoHand={playerTwoHand}
+        setPlayerHand={setPlayerTwoHand}
+        playerTurn={playerTurn}
         playerTookTurn={playerTookTurn}
+        playerTwoTookTurn={playerTwoTookTurn}
       />
     </>
   )
