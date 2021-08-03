@@ -32,6 +32,10 @@ const Game = () => {
   useEffect(() => {
     console.log("useEffect: test handCheck: " + handCheck); 
   }, [handCheck]);
+  useEffect(() => {
+    console.log("useEffect: test deck: " + JSON.stringify(deck)); 
+    console.log("useEffect: test deck.length: " + JSON.stringify(deck.length)); 
+  }, [deck]);
 
   const initializeGame = () => {
     shuffleDeck(deck);
@@ -101,16 +105,21 @@ const Game = () => {
     console.log("cardsSuccessfullyFished: " + JSON.stringify(cardsSuccessfullyFished));
 
     let whoseTurn = playerTurn
+    let newDeck = deck
+    let goFishedCard = []
     if (cardsSuccessfullyFished.length === 0) {
-      goFish();
+      goFishedCard = [...newDeck.splice(-1,1)]
+      console.log("test goFishedCard: " + JSON.stringify(goFishedCard));
       whoseTurn = 0
       console.log("setPlayerTurn to player2!");
     } else {
       console.log("testz - you got some cards!");
       //alert function tell player to pick again
     }
+    setDeck(newDeck)
     setPlayerTurn(whoseTurn)
-
+    setPlayerHand(oldHand => [...oldHand, ...cardsSuccessfullyFished, ...goFishedCard]);
+    setPlayerTwoHand(opponentHandAfterBeingFished)
   }
 
   const playerTwoTookTurn = number => {
@@ -126,16 +135,21 @@ const Game = () => {
     console.log("cardsSuccessfullyFished : " + JSON.stringify(cardsSuccessfullyFished));
 
     let whoseTurn = playerTurn
+    let newDeck = deck
+    let goFishedCard = []
     if (cardsSuccessfullyFished.length === 0) {
-      goFish();
+      goFishedCard = [...newDeck.splice(-1,1)]
+      console.log("test goFishedCard: " + JSON.stringify(goFishedCard));
       whoseTurn = 1
       console.log("setPlayerTurn to player1!");
     } else {
       console.log("testz - you got some cards!");
+      //alert function tell player to pick again
     }
+    setDeck(newDeck)
     setPlayerTurn(whoseTurn)
-
-
+    setPlayerTwoHand(oldHand => [...oldHand, ...cardsSuccessfullyFished, ...goFishedCard]);
+    setPlayerHand(opponentHandAfterBeingFished)
   }
 
   // const checkForRequestedCards = number => {
@@ -149,20 +163,14 @@ const Game = () => {
 
 
   const goFish = () => {
-
+    
   }
 
 
   const checkForWinner = () => {
-
+    
   }
 
-
-
-
-  const computerTakesTurn = () => {
-
-  }
 
 
 
@@ -172,7 +180,7 @@ const Game = () => {
         playerHand={playerHand}
         setPlayerHand={setPlayerHand}
         playerTwoHand={playerTwoHand}
-        setPlayerHand={setPlayerTwoHand}
+        setPlayerTwoHand={setPlayerTwoHand}
         playerTurn={playerTurn}
         playerTookTurn={playerTookTurn}
         playerTwoTookTurn={playerTwoTookTurn}

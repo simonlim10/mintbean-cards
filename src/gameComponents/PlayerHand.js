@@ -39,7 +39,7 @@ const PlayerHand = props => {
     const playerhandtwo = props.playerTwoHand.sort((left,right) => {
       return ranks[left.number] - ranks[right.number];
     });
-    props.setPlayerHand(playerhandtwo);
+    props.setPlayerTwoHand(playerhandtwo);
     console.log("props.playerHand RIGHT AFTER sort: " + JSON.stringify(props.playerHand))
     console.log("props.playerTwoHand RIGHT AFTER sort: " + JSON.stringify(props.playerTwoHand))
   };
@@ -47,9 +47,9 @@ const PlayerHand = props => {
 
   let content = "";
 
-  if (props.playerTurn == 1) {
 
     content = (
+      <>
       <div className="player-hand text-right flex flex-row flex-nowrap">
         player 1
         {props.playerHand.map((card, index) => (
@@ -62,11 +62,6 @@ const PlayerHand = props => {
         }
 
       </div>
-    )
-
-  } else {
-
-    content = (
       <div className="player-hand text-right flex flex-row flex-nowrap">
         player 2
         {props.playerTwoHand.map((card, index) => (
@@ -79,8 +74,8 @@ const PlayerHand = props => {
         }
 
       </div>
+      </>
     )
-  }
 
   return content;
 }
