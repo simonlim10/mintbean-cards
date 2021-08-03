@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // import PlayingArea from "./PlayingArea";
-import PlayerHand from "./PlayerHand";
+import PlayingArea from "./PlayingArea";
 
 import deckofcards from '../deck-of-cards.js';
 
@@ -13,8 +13,6 @@ const Game = () => {
   const [playerTwoHand, setPlayerTwoHand] = useState([]);
 
   const [playerTurn, setPlayerTurn] = useState('');
-
-  const [requestedCard, setRequestedCard] = useState('');
 
   const [winnerAnnouncement, setWinnerAnnouncement] = useState('');
 
@@ -150,16 +148,6 @@ const Game = () => {
     checkForWinner()
   }
 
-  // const checkForRequestedCards = number => {
-  //   let handToCheck = playerHand
-
-  //   const cardsSuccessfullyFished = handToCheck.filter(card => card.number == number);
-  //   const opponentHandAfterBeingFished = handToCheck.filter(card => card.number !== number);
-
-  //   return cardsSuccessfullyFished
-  // }
-
-
   let ranks = {
     2: 1,
     3: 2,
@@ -190,13 +178,8 @@ const Game = () => {
   };
 
 
-
-  const goFish = () => {
-
-  }
-
-
   const checkForWinner = () => {
+
     let winner = ''
     let checkPlayerOneHand = playerHand
     let checkPlayerTwoHand = playerTwoHand
@@ -209,7 +192,6 @@ const Game = () => {
     console.log("testwin checkPlayerOneHand[0].number: " + checkPlayerOneHand[0].number);
 
     if (deck.length === 0 && playerOneHandRemainder === 0 && playerTwoHandRemainder === 0) {
-      sortCardsInHand()
       let pOneScore = 0
       let pTwoScore = 0
       let completeBook = 0
@@ -249,30 +231,30 @@ const Game = () => {
         lastpTwoCard = checkPlayerTwoHand[x].number
       }
 
+      //check 
       console.log("testwin calc start 1")
       if (pOneScore > pTwoScore) {
-        winner = "p1 wins!"
+        winner = "player 1 wins!"
         console.log("testwin calc start 2")
       } else if (pOneScore < pTwoScore) {
-        winner = "p2 wins!"
+        winner = "player 2 wins!"
         console.log("testwin calc start 3")
-      } else if (pOneScore = pTwoScore) {
-        winner = "it's a tie!"
       }
     }
     setWinnerAnnouncement(winner)
-    announceWinner()
+    // announceWinner()
   }
 
-  const announceWinner = () => {
+  // const announceWinner = () => {
 
-  }
+  // }
 
 
   return (
     <>
       {winnerAnnouncement}
-      <PlayerHand 
+      <PlayingArea 
+        deck={deck}
         playerHand={playerHand}
         setPlayerHand={setPlayerHand}
         playerTwoHand={playerTwoHand}
