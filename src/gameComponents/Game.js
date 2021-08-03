@@ -16,8 +16,6 @@ const Game = () => {
 
   const [requestedCard, setRequestedCard] = useState('');
 
-  const [handCheck, setHandCheck] = useState([]);
-
 
   useEffect(() => {
     console.log("useEffect: deck: " + JSON.stringify(deck)); 
@@ -29,9 +27,6 @@ const Game = () => {
   useEffect(() => {
     console.log("useEffect: test playerTurn: " + playerTurn); 
   }, [playerTurn]);
-  useEffect(() => {
-    console.log("useEffect: test handCheck: " + handCheck); 
-  }, [handCheck]);
   useEffect(() => {
     console.log("useEffect: test deck: " + JSON.stringify(deck)); 
     console.log("useEffect: test deck.length: " + JSON.stringify(deck.length)); 
@@ -120,6 +115,7 @@ const Game = () => {
     setPlayerTurn(whoseTurn)
     setPlayerHand(oldHand => [...oldHand, ...cardsSuccessfullyFished, ...goFishedCard]);
     setPlayerTwoHand(opponentHandAfterBeingFished)
+    checkForWinner()
   }
 
   const playerTwoTookTurn = number => {
@@ -150,6 +146,7 @@ const Game = () => {
     setPlayerTurn(whoseTurn)
     setPlayerTwoHand(oldHand => [...oldHand, ...cardsSuccessfullyFished, ...goFishedCard]);
     setPlayerHand(opponentHandAfterBeingFished)
+    checkForWinner()
   }
 
   // const checkForRequestedCards = number => {
@@ -163,13 +160,45 @@ const Game = () => {
 
 
   const goFish = () => {
-    
+
   }
 
 
   const checkForWinner = () => {
-    
+    let checkPlayerOneHand = playerHand
+    let checkPlayerTwoHand = playerTwoHand
+
+    let playerOneHandRemainder = (playerHand.length % 4)
+    let playerTwoHandRemainder = (playerHand.length % 4)
+    console.log("testwin deck.length: " + (deck.length === 0));
+    console.log("testwin playerOneHandRemainder: " + playerOneHandRemainder);
+    console.log("testwin playerTwoHandRemainder: " + playerTwoHandRemainder);
+    console.log("testwin checkPlayerOneHand[0].number: " + checkPlayerOneHand[0].number);
+
+    if (deck.length === 0 && playerOneHandRemainder === 0 && playerTwoHandRemainder === 0) {
+      let pOneScore = 0
+      let pTwoScore = 0
+      let completeBook = 0
+
+      let lastpOneCard = checkPlayerOneHand[0].number
+      let lastpTwoCard = checkPlayerTwoHand[0].number
+      for (var x = 0; x <= checkPlayerOneHand.length; x++) {
+          console.log("testwin x: " + x)
+        if (lastpOneCard == checkPlayerOneHand[x].number) {
+          completeBook++
+          if (completeBook == 3) {
+            pOneScore++
+            console.log("testwin pOneScore: " + pOneScore)
+            completeBook = 0
+          }
+        } else {
+          completeBook = 0
+        }
+      }
+
+    }
   }
+
 
 
 

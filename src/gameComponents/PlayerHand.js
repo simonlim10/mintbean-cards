@@ -50,25 +50,23 @@ const PlayerHand = props => {
 
     content = (
       <>
-      <div className="player-hand text-right flex flex-row flex-nowrap">
+      <div className="player-hand text-right flex flex-row flex-wrap">
         player 1
         {props.playerHand.map((card, index) => (
             <Card card={card}
                   key={index}
                   playerTookTurn={props.playerTookTurn}
-                  className="w-32 h-44 rounded-lg shadow-md border-2 border-gray-300 overflow-hidden"
             />
           ))
         }
 
       </div>
-      <div className="player-hand text-right flex flex-row flex-nowrap">
+      <div className="player-hand text-right flex flex-row flex-wrap">
         player 2
         {props.playerTwoHand.map((card, index) => (
             <Card card={card}
                   key={index}
                   playerTookTurn={props.playerTwoTookTurn}
-                  className="w-32 h-44 rounded-lg shadow-md border-2 border-gray-300 overflow-hidden"
             />
           ))
         }
